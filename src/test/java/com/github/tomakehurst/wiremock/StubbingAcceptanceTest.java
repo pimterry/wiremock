@@ -223,6 +223,12 @@ public class StubbingAcceptanceTest extends AcceptanceTestBase {
 	}
 	
 	@Test
+	public void matchingUrlsWithUnescapedSpecialCharacters() {
+	    stubFor(get(urlEqualTo("/path:with:colons/")).willReturn(aResponse().withStatus(HTTP_OK)));
+	    assertThat(testClient.get("/path:with:colons/").statusCode(), is(HTTP_OK));
+	}
+	
+	@Test
 	public void default200ResponseWhenStatusCodeNotSpecified() {
 		stubFor(get(urlEqualTo("/default/two-hundred")).willReturn(aResponse()));
 		assertThat(testClient.get("/default/two-hundred").statusCode(), is(HTTP_OK));
